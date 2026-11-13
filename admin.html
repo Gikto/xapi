@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Xapi · Commandes</title>
+<style>
+:root{--kraft:#EAD7B0;--kraft2:#F0E2BC;--label:#FFF8E6;--honey:#E9A820;--brown:#3A2410;--brick:#B04A40;--green:#3E7B4A;--muted:#6B5A44;--side:232px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--kraft);color:var(--brown);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:2px solid var(--brown);background:var(--label);padding:8px 14px;font-weight:700}
+button.pri{background:var(--brown);color:var(--label)}
+button.sm{padding:5px 10px;font-size:.88rem}
+button.dg{background:var(--brick);color:#fff;border-color:var(--brick)}
+button:disabled{opacity:.5;cursor:wait}
+input[type=password],input[type=text],input[type=email],input[type=number],textarea,select{border:2px solid var(--brown);background:#fff;padding:8px 10px;width:100%;max-width:100%}
+textarea{min-height:60px}
+a{color:var(--brick)}
+.hide{display:none!important}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
+.err{color:var(--brick);font-weight:700;min-height:1.4em}
+.box{background:var(--label);border:2px solid var(--brown);padding:16px;margin:0 0 16px;box-shadow:4px 4px 0 var(--brown)}
+.box h3{margin:0 0 8px}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--brown)}
+.brand svg{width:30px;height:30px}.brand b{font-size:1.5rem;letter-spacing:.01em}
+/* connexion */
+#loginTop{background:var(--honey);padding:14px 18px;border-bottom:3px solid var(--brown)}
+#login{max-width:460px;margin:24px auto;padding:0 16px}
+/* structure */
+#shell{display:flex;min-height:100vh}
+#side{width:var(--side);flex:none;background:var(--honey);border-right:3px solid var(--brown);padding:16px 12px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;overflow:auto}
+#side .hello{font-weight:700;margin:6px 4px 10px}
+#side nav{display:flex;flex-direction:column;gap:4px}
+#side nav button{text-align:left;background:transparent;border:2px solid transparent;padding:9px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+#side nav button:hover{border-color:var(--brown)}
+#side nav button.on{background:var(--brown);color:var(--label)}
+.pill{background:var(--brick);color:#fff;border-radius:999px;font-size:.78rem;padding:1px 8px;min-width:22px;text-align:center}
+#side .foot{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+#content{flex:1;min-width:0;padding:18px;max-width:1040px}
+#mtop{display:none}
+h2.vt{margin:0 0 14px;font-size:1.5rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--label);border:2px solid var(--brown);padding:12px 14px;text-align:left}
+.card small{display:block;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem}
+.card b{font-size:1.5rem}
+button.card{display:block;width:100%;cursor:pointer;box-shadow:3px 3px 0 var(--brown)}
+.card.alert{border-color:var(--brick);background:#FBE9E4}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:16px}
+.charts svg{width:100%;height:auto;display:block;margin-top:6px}
+.charts text{font:11px system-ui,sans-serif;fill:#3A2410}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.chip{border-radius:999px;padding:6px 14px;font-size:.92rem}
+.chip.on{background:var(--brown);color:var(--label)}
+.order{background:var(--label);border:2px solid var(--brown);padding:14px;margin-bottom:12px}
+.order .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.order .n{font-weight:800;font-size:1.1rem}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.82rem;font-weight:800;border:2px solid var(--brown)}
+.b-attente{background:#F7D9A0}.b-paye{background:#BFE3C4}.b-retire{background:#D9D9D9}.b-annule{background:#EBC4BE;text-decoration:line-through}
+.late{background:var(--brick);color:#fff;border-color:var(--brick)}
+.order ul{margin:8px 0;padding-left:20px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{border:1.5px solid var(--brown);padding:6px 8px;text-align:left}th{background:var(--kraft2)}td.r,th.r{text-align:right}
+.low{background:#FBE9E4}
+.row{margin:10px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pl{display:grid;grid-template-columns:1fr auto auto auto;gap:6px;align-items:center;margin-bottom:6px}
+dialog{border:3px solid var(--brown);background:var(--label);max-width:560px;width:calc(100% - 24px);padding:16px;box-shadow:6px 6px 0 var(--brown)}
+dialog::backdrop{background:rgba(58,36,16,.55)}
+dialog label{display:block;font-weight:700;margin:10px 0 3px}
+.itm{display:grid;grid-template-columns:1.2fr 1.1fr .9fr 70px 34px;gap:6px;margin-bottom:6px}
+.itm select,.itm input{padding:6px;min-width:0}
+.itm button{padding:2px}
+.tot{font-weight:800;text-align:right;margin:6px 0}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--brown);color:var(--label);padding:10px 16px;font-weight:700;z-index:20;max-width:90%}
+#prep h2{margin:0 0 4px}#prep h3{margin:16px 0 4px;border-bottom:2px solid #000;padding-bottom:2px}#prep li{margin:3px 0}
+.prepP{margin-bottom:16px}
+@media(max-width:820px){
+  #shell{display:block}
+  #mtop{display:flex;align-items:center;gap:10px;background:var(--honey);border-bottom:3px solid var(--brown);padding:10px 14px;position:sticky;top:0;z-index:6}
+  #mtop .t{flex:1;font-weight:800}
+  #side{position:fixed;left:0;top:0;bottom:0;z-index:10;transform:translateX(-105%);transition:transform .15s;box-shadow:6px 0 20px #0006}
+  #side.open{transform:none}
+  #content{padding:12px}
+  .itm{grid-template-columns:1fr 1fr 1fr 64px 30px}
+  .grid2{grid-template-columns:1fr}
+}
+
+/* couleurs par thème */
+#side nav button[data-view]{border-left:6px solid var(--c,transparent)}
+#side nav button[data-view="dash"]{--c:#8A7456}#side nav button[data-view="orders"]{--c:#C98A00}#side nav button[data-view="prep"]{--c:#3B6EA5}#side nav button[data-view="stock"]{--c:#B04A40}#side nav button[data-view="prod"]{--c:#7A5BA6}#side nav button[data-view="stats"]{--c:#3E8E4F}#side nav button[data-view="settings"]{--c:#555}#side nav button[data-view="help"]{--c:#2E8B8B}
+h2.vt{padding-left:10px;border-left:8px solid var(--vc,var(--brown))}
+section[data-v="orders"]{--vc:#C98A00}section[data-v="prep"]{--vc:#3B6EA5}section[data-v="stock"]{--vc:#B04A40}section[data-v="prod"]{--vc:#7A5BA6}section[data-v="stats"]{--vc:#3E8E4F}section[data-v="help"]{--vc:#2E8B8B}section[data-v="settings"]{--vc:#555}
+.card.c-pay{background:#FBEBC8;border-color:#C98A00}.card.c-prep{background:#DCE8F5;border-color:#3B6EA5}.card.c-stock{background:#F6DDD9;border-color:#B04A40}.card.c-cash{background:#D5EBD8;border-color:#3E8E4F}.card.c-late{background:#F3C9C2;border-color:#B04A40}
+.order{border-left:10px solid #bbb}.order.s-attente{border-left-color:#E9A820}.order.s-paye{border-left-color:#3E8E4F}.order.s-retire{border-left-color:#999}.order.s-annule{border-left-color:#B04A40;opacity:.8}
+tr.click{cursor:pointer}tr.click:hover td{background:#FBEBC8}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.tile{border:2px solid var(--brown);padding:10px 12px}.tile b{display:block;font-size:1.7rem;line-height:1.1}.tile small{font-weight:700;text-transform:uppercase;font-size:.72rem;letter-spacing:.04em}
+.button.tile,button.tile{text-align:left;cursor:pointer;font:inherit;box-shadow:none}.tile.sel{box-shadow:4px 4px 0 var(--brown);outline:3px solid var(--brown)}.tile.t-gr{background:#E4E4E4;border-color:#888}.tile.t-ko{background:#F6DDD9;border-color:#B04A40}
+.order{padding:0}.order>*{margin-left:14px;margin-right:14px}.order .top{margin:0;padding:10px 14px;border-bottom:2px solid var(--brown);background:#eee}.order.s-attente .top{background:#FBEBC8}.order.s-paye .top{background:#D5EBD8}.order.s-retire .top{background:#E4E4E4}.order.s-annule .top{background:#F6DDD9}.order .acts{margin-bottom:12px}.order>.mono,.order>ul{margin-top:8px}
+.tile.t-all{background:#DCE8F5;border-color:#3B6EA5}.tile.t-ok{background:#D5EBD8;border-color:#3E8E4F}.tile.t-no{background:#FBEBC8;border-color:#C98A00}.tile.t-pots{background:#EADFF5;border-color:#7A5BA6}
+.pp h3{margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#DCE8F5;margin:-16px -16px 10px;padding:10px 16px;border-bottom:2px solid #3B6EA5}
+.pp td{vertical-align:top}.pp .pay{font-weight:800}.pay.no{color:#8A5A00}.pay.ok{color:#2D6E3A}
+.sw{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}.vgrid>div{border:1.5px solid var(--brown);padding:8px;background:#fff}
+@media print{body{background:#fff}#shell,#loginTop,#login,#toast,dialog{display:none!important}#prep.printing{display:block!important}#prep{padding:0;color:#000}}
+</style>
+</head>
+<body>
+<div id="loginTop"><a class="brand" href="./" title="Retour au site" aria-label="Xapi, retour au site"><svg viewBox="0 0 473 473" aria-hidden="true"><use href="#lobes"/></svg><b>Xapi</b></a></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="lobes" viewBox="0 0 473 473"><path fill="#3A2410" d="M234 258 158 327 156 393 221 460 236 472 312 395 312 330zM331 158 257 237 328 314 395 315 472 236 395 159zM141 158 77 159 0 235 78 315 144 314 214 237zM236 0 157 78 157 143 234 215 314 142 313 77z"/></symbol></svg>
+
+<section id="login">
+  <div class="box">
+    <label for="pw"><b>Mot de passe</b></label><br>
+    <input type="password" id="pw" autocomplete="current-password" style="max-width:320px"> <button class="pri" id="go" type="button" style="margin-top:6px">Entrer</button>
+    <p class="err" id="lerr" role="alert"></p>
+    <p style="margin:8px 0 0"><a href="#" id="forgot">Mot de passe oublié ?</a></p>
+    <div id="fpanel" class="hide" style="margin-top:10px">
+      <p style="margin:0 0 6px">Un code à 6 chiffres sera envoyé à l'adresse e-mail d'alerte de la boutique.</p>
+      <button type="button" id="fsend">M'envoyer un code</button>
+      <div id="fstep2" class="hide" style="margin-top:10px">
+        <input type="text" id="fcode" inputmode="numeric" maxlength="6" placeholder="Code reçu" autocomplete="one-time-code" style="max-width:200px;margin-bottom:6px"><br>
+        <input type="password" id="fp1" autocomplete="new-password" placeholder="Nouveau mot de passe (10 caractères min.)" style="max-width:320px;margin-bottom:6px"><br>
+        <button class="pri" type="button" id="fgo">Changer le mot de passe</button>
+      </div>
+      <p id="fmsg" class="err" role="alert"></p>
+    </div>
+  </div>
+</section>
+
+<div id="shell" class="hide">
+  <aside id="side" aria-label="Menu">
+    <a class="brand" href="./" title="Retour au site"><svg viewBox="0 0 473 473" aria-hidden="true"><use href="#lobes"/></svg><b>Xapi</b></a>
+    <div class="hello">Bonjour Xavier !</div>
+    <nav>
+      <button type="button" data-view="dash">Tableau de bord</button>
+      <button type="button" data-view="orders">Commandes <span class="pill hide" id="pNew"></span></button>
+      <button type="button" data-view="prep">Préparation <span class="pill hide" id="pPrep"></span></button>
+      <button type="button" data-view="stock">Stock <span class="pill hide" id="pStock"></span></button>
+      <button type="button" data-view="prod">Miels</button>
+      <button type="button" data-view="stats">Statistiques</button>
+      <button type="button" data-view="settings">Réglages</button>
+      <button type="button" data-view="help">Aide</button>
+    </nav>
+    <div class="foot"><button class="sm" id="refresh" type="button">Actualiser</button><a class="sm" href="./">← Retour au site</a><button class="sm" id="out" type="button">Se déconnecter</button></div>
+  </aside>
+  <div id="content">
+    <div id="mtop"><button id="burger" type="button" aria-label="Menu" aria-expanded="false">☰</button><span class="t" id="mtitle">Xapi</span></div>
+
+    <!-- Tableau de bord -->
+    <section data-v="dash">
+      <h2 class="vt">Bonjour Xavier !</h2>
+      <div id="alerts"></div>
+      <div class="cards" id="todo"></div>
+      <div class="box"><h3>Dernières commandes</h3><div id="recent"></div></div>
+    </section>
+
+    <!-- Commandes -->
+    <section data-v="orders" class="hide">
+      <h2 class="vt">Commandes</h2>
+      <div class="bar"><input type="text" id="q" placeholder="Chercher un nom, un n° ou un e-mail" style="max-width:340px" aria-label="Chercher"></div>
+      <div class="bar" id="filters"></div>
+      <div id="list"></div>
+    </section>
+
+    <!-- Préparation -->
+    <section data-v="prep" class="hide">
+      <h2 class="vt">Préparation</h2>
+      <div class="bar"><button class="pri" id="prn" type="button">Imprimer la préparation</button></div>
+      <div id="prepView"></div>
+    </section>
+
+    <!-- Stock -->
+    <section data-v="stock" class="hide">
+      <h2 class="vt">Stock</h2>
+      <div class="box"><p style="margin-top:0">Pour chaque miel, trois choix : <b>Disponible</b> (le site ne dit rien, c'est le réglage normal), <b>Épuisé</b> (le site affiche « Épuisé » et refuse la commande), ou <b>Nombre exact</b> si vous voulez compter vos pots : le site affiche « Plus que N pots » sous 5, puis « Épuisé » à zéro. Une commande annulée remet ses pots en stock.</p>
+        <div id="stockrows" style="overflow:auto"></div><button class="pri" id="stb" type="button" style="margin-top:10px">Enregistrer le stock</button></div>
+    </section>
+
+    <!-- Miels -->
+    <section data-v="prod" class="hide">
+      <h2 class="vt">Miels</h2>
+      <div class="box"><p style="margin-top:0">Ici vous gérez les miels proposés sur le site : nom, texte, caractéristiques, photos. Pour une nouvelle récolte, ajoutez un miel (ou modifiez le nom d'un existant). Un miel masqué disparaît du site mais garde son historique. Les prix se règlent dans Réglages, le stock dans Stock. N'oubliez pas d'enregistrer en bas.</p></div>
+      <div id="prodRows"></div>
+      <div class="bar"><button class="sm" id="prAdd" type="button">+ Ajouter un miel</button> <button class="pri" id="prSave" type="button">Enregistrer les miels</button></div>
+    </section>
+
+    <!-- Aide -->
+    <section data-v="help" class="hide">
+      <h2 class="vt">Aide</h2>
+      <div class="box"><h3>Une commande arrive</h3><p style="margin-top:0">Vous recevez un e-mail. Le client reçoit les détails du virement. Quand l'argent est sur le compte, ouvrez <b>Commandes</b> et appuyez sur <b>Marquer payé</b>. À la remise du pot, appuyez sur <b>Marquer retiré</b>.</p></div>
+      <div class="box"><h3>Préparer les pots</h3><p style="margin-top:0"><b>Préparation</b> liste tout ce qu'il faut sortir, y compris les commandes pas encore payées (marquées « PAS ENCORE PAYÉ » : on ne les remet qu'après paiement). Le bouton Imprimer donne une feuille.</p></div>
+      <div class="box"><h3>Rupture de miel</h3><p style="margin-top:0">Dans <b>Stock</b>, choisissez <b>Épuisé</b> pour le format concerné. Pour le remettre en vente, rechoisissez <b>Disponible</b>.</p></div>
+      <div class="box"><h3>Une nouvelle récolte</h3><p style="margin-top:0">Dans <b>Miels</b> : <b>+ Ajouter un miel</b>, écrivez le nom et le texte, ajoutez les photos des pots (touchez le cadre photo), puis <b>Enregistrer</b>. Le miel apparaît tout de suite sur le site. Pensez ensuite à régler son stock.</p></div>
+      <div class="box"><h3>Faire une pause</h3><p style="margin-top:0">Vacances ou rupture totale : dans <b>Réglages → Suspendre les commandes</b>, cochez la case et écrivez un message. Les clients ne peuvent plus commander. Décochez pour rouvrir.</p></div>
+      <div class="box"><h3>Afficher une annonce</h3><p style="margin-top:0">Dans <b>Réglages → Bandeau d'annonce</b>, écrivez une phrase : elle s'affiche en haut du site sans bloquer les commandes. Enregistrer un champ vide (ou « Retirer le bandeau ») la supprime.</p></div>
+      <div class="box"><h3>Sauvegardes</h3><p style="margin-top:0">Le 1er de chaque mois, un fichier avec toutes les commandes arrive par e-mail. Conservez-le.</p></div>
+      <div class="box"><h3>Mot de passe oublié</h3><p style="margin-top:0">Sur la page de connexion, touchez « Mot de passe oublié ? ». Un code arrive par e-mail à l'adresse d'alerte.</p></div>
+      <div class="box"><h3>Le site ne répond plus</h3><p style="margin-top:0">Contactez Jonathan. S'il s'agit d'une pause de la base de données (rare : un contrôle automatique l'évite), elle se réactive en quelques minutes depuis le compte Supabase.</p></div>
+      <div class="box"><h3>Un avertissement rouge sur le tableau de bord</h3><p style="margin-top:0">« Des e-mails n'ont pas pu partir » : les clients ou vous n'avez peut-être pas reçu certains messages. Prévenez Jonathan (le plus souvent, une clé d'envoi à renouveler), puis appuyez sur « J'ai compris ». Un client sans e-mail : vérifiez-le dans Commandes.</p></div>
+    </section>
+
+    <!-- Statistiques -->
+    <section data-v="stats" class="hide">
+      <h2 class="vt">Statistiques</h2>
+      <div class="bar"><label for="month"><b>Mois</b></label> <select id="month" style="width:auto"></select> <button id="csv" type="button">Exporter pour Excel (.csv)</button></div>
+      <div class="cards" id="cards"></div>
+      <div class="charts" id="charts"></div>
+      <div class="box"><h3>Résumé par mois</h3><div id="monthly" style="overflow:auto"></div></div>
+      <div class="box"><h3>Pots vendus (commandes payées) <span id="potsLabel" class="mono"></span></h3><div id="pots" style="overflow:auto"></div></div>
+    </section>
+
+    <!-- Réglages -->
+    <section data-v="settings" class="hide">
+      <h2 class="vt">Réglages</h2>
+      <div class="box"><h3>Commandes en ligne</h3>
+        <div id="pauseState" role="status"></div>
+        <label for="shMsg" style="display:block;margin-top:12px"><b>Message montré aux clients pendant une suspension</b></label><input type="text" id="shMsg" maxlength="200" placeholder="Ex. : Pause estivale, retour le 15 août." style="max-width:460px"><br>
+        <div class="bar" style="margin-top:10px"><button id="shToggle" type="button" style="font-size:1.05rem;padding:12px 18px"></button> <button id="shSave" type="button" class="hide">Enregistrer le message</button></div></div>
+      <div class="box"><h3>Bandeau d'annonce</h3>
+        <p style="margin-top:0">Une phrase affichée en jaune en haut du site, et en fenêtre à la première visite, sans bloquer les commandes. <b>Enregistrer un bandeau vide le supprime.</b></p>
+        <input type="text" id="shBan" maxlength="200" placeholder="Ex. : Nouveau : le miel de châtaignier est arrivé !" style="max-width:460px" aria-label="Bandeau d'annonce"><br>
+        <button class="pri" id="shBanSave" type="button" style="margin-top:8px">Enregistrer le bandeau</button> <button id="shBanDel" type="button" style="margin-top:8px">Retirer le bandeau</button></div>
+      <div class="box"><h3>Compte bancaire pour les virements</h3><p style="margin-top:0">Affiché au client après sa commande, dans le QR code et dans les e-mails. Un changement s'applique aux nouvelles commandes et aux prochains e-mails.</p>
+        <p class="box" id="bankNow" style="background:#fff;margin:0 0 10px;box-shadow:none"></p>
+        <label for="bn"><b>Titulaire du compte</b></label><input type="text" id="bn" maxlength="80" style="max-width:360px"><br>
+        <label for="bi" style="display:block;margin-top:8px"><b>IBAN</b></label><input type="text" id="bi" maxlength="42" style="max-width:360px" autocomplete="off"><br>
+        <button class="pri" id="bkb" type="button" style="margin-top:8px">Enregistrer le compte</button></div>
+      
+      <div class="box"><h3>Lieux de retrait</h3><p style="margin-top:0">Ces lieux sont proposés dans le formulaire de commande. Décocher « Actif » masque un lieu sans toucher aux anciennes commandes. Le texte de la page « Où nous trouver » se modifie séparément.</p>
+        <div id="placeRows"></div><button class="sm" id="pladd" type="button">+ Ajouter un lieu</button> <button class="pri" id="plb" type="button">Enregistrer les lieux</button></div>
+      <div class="box"><h3>Sauvegarde des commandes</h3><p style="margin-top:0">Chaque 1er du mois, un fichier Excel (.csv) de toutes les commandes est envoyé par e-mail à l'adresse d'alerte ci-dessous. Gardez ces e-mails : ce sont vos sauvegardes.</p><button id="bkNow" type="button">Envoyer une sauvegarde maintenant</button></div>
+      <div class="box"><h3>E-mail qui reçoit les alertes de commande</h3>
+        <input type="email" id="aem" style="max-width:360px" aria-label="E-mail d'alerte"> <button id="aemb" type="button">Enregistrer</button></div>
+      <div class="box"><h3>Mot de passe</h3><p style="margin-top:0">10 caractères minimum.</p>
+        <input type="password" id="np1" autocomplete="new-password" placeholder="Nouveau mot de passe" style="max-width:320px;margin-bottom:6px"><br>
+        <input type="password" id="np2" autocomplete="new-password" placeholder="Répéter le mot de passe" style="max-width:320px;margin-bottom:6px"><br><button id="npb" type="button">Changer</button></div>
+    </section>
+  </div>
+</div>
+
+<dialog id="ed"><form method="dialog" id="edf">
+  <h2 style="margin:0" id="edt"></h2>
+  <label for="en">Nom</label><input type="text" id="en" maxlength="80">
+  <label for="ee">E-mail du client</label><input type="email" id="ee" maxlength="120">
+  <label for="ep">Retrait</label><input type="text" id="ep" maxlength="120" list="pl"><datalist id="pl"></datalist>
+  <label for="em">Message</label><textarea id="em" maxlength="300"></textarea>
+  <label>Pots</label><div id="eit"></div>
+  <button type="button" class="sm" id="eadd">+ Ajouter une ligne</button>
+  <div class="tot" id="etot"></div>
+  <p class="err" id="eerr" role="alert"></p>
+  <div class="acts"><button class="pri" type="button" id="esave">Enregistrer</button> <button type="button" id="ecancel">Fermer</button></div>
+</form></dialog>
+<div id="prep" class="hide"></div>
+<div id="toast" class="hide" role="status"></div>
+
+<script>
+/* ===== À REMPLIR : mêmes valeurs que dans index.html (voir schema.sql) ===== */
+const SUPABASE_URL = 'https://xnemruhbczgzqwbnbzmn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_eXazyUuyI27p176wwtnH0Q_Bk0t-az5';
+/* ===== */
+const IDLE_MIN = 120; /* déconnexion automatique après 2 heures sans action */
+const LOW = 5;       /* stock considéré comme bas */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const eur=n=>Number(n).toLocaleString('fr-BE',{style:'currency',currency:'EUR'});
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST={attente:'En attente de paiement',paye:'Payé',retire:'Payé et retiré',annule:'Annulé'};
+let products=[], shop={paused:false,pause_message:'',banner:''}, mailInfo={configured:true,failures:0};
+const pad4=n=>String(n).padStart(4,'0');
+const hn=id=>{ const p=products.find(x=>x.id===id); return p?p.name:id; };
+const TX={classique:'classique',cremeux:'crémeux'};
+const fmtD=d=>d?new Date(d).toLocaleString('fr-BE',{timeZone:'Europe/Brussels',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+const monthOf=d=>d?new Date(d).toLocaleDateString('fr-CA',{timeZone:'Europe/Brussels',year:'numeric',month:'2-digit'}).slice(0,7):'';
+const monthLabel=m=>m==='tout'?'Tous les mois':new Date(m+'-01T12:00:00').toLocaleDateString('fr-BE',{month:'long',year:'numeric'});
+const itemLines=o=>(o.items||[]).map(i=>`${i.qty} × ${hn(i.honey)} ${TX[i.texture]||i.texture} ${i.size}`);
+const ageDays=o=>(Date.now()-new Date(o.created_at).getTime())/864e5;
+const ageH=o=>(Date.now()-new Date(o.created_at).getTime())/36e5;
+const gram=z=>{ const m=/^([0-9]+(?:,[0-9]+)?)\s*(kg|g)$/.exec(z); return m?parseFloat(m[1].replace(',','.'))*(m[2]==='kg'?1000:1):0; };
+const sizesFor=(p,t)=>Object.keys((p&&p.prices)||{}).filter(k=>k.startsWith(t+'|')).map(k=>k.slice(t.length+1)).sort((a,b)=>gram(a)-gram(b));
+const allSizes=()=>[...new Set(products.flatMap(p=>Object.keys(p.prices||{}).map(k=>k.split('|')[1])))].sort((a,b)=>gram(a)-gram(b));
+const SLf=()=>products.flatMap(p=>[[p.id,'classique',p.name+' classique'],[p.id,'cremeux',p.name+' crémeux']].filter(([h,t])=>sizesFor(p,t).length));
+
+let onlyId=null, pw=null, orders=[], stock=[], prices=[], places=[], bank={iban:'',beneficiary:''}, adminEmail='', view='dash', filter='attente', month='tout', query='', timer=null, idle=null, loaded=false;
+try{ pw=sessionStorage.getItem('xapi-admin'); }catch(e){}
+
+async function rpc(fn,args){
+  if(!SUPABASE_URL||!SUPABASE_KEY) return {error:'config'};
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY},body:JSON.stringify(args)});
+    if(!r.ok) return {error:'http'};
+    return await r.json();
+  }catch(e){ return {error:'reseau'}; }
+}
+const ERR={iban:'IBAN invalide : vérifiez les chiffres.',titulaire:'Titulaire invalide (2 à 80 caractères).',stock:'Stock insuffisant pour cette opération.',stock_invalide:'Stock invalide (un nombre de 0 à 9999).',prix_invalide:'Prix invalide (entre 0,01 et 500), au moins une variante par miel.',lieu_invalide:'Lieu invalide (3 à 120 caractères, au moins un lieu actif).',nom:'Nom trop court.',contact:'Contact invalide.',retrait:'Retrait invalide.',articles:'Vérifiez les pots (au moins une ligne, quantité de 1 à 30).',introuvable:'Commande introuvable.',non_annulee:'Seule une commande annulée peut être supprimée.',email:'Adresse e-mail invalide ou manquante.',trop_court:'Mot de passe trop court (10 caractères minimum).',config:'La page n’est pas encore reliée à la base de données.',http:'Erreur du serveur, réessayez.',reseau:'Pas de connexion, réessayez.',mot_de_passe:'Mot de passe incorrect.',mail_non_configure:'Les e-mails ne sont pas encore configurés : demandez à Jonathan.',trop_de_demandes:'Trop de demandes. Réessayez dans une heure.',code_invalide:'Code incorrect ou expiré.',texte_long:'Texte trop long (200 caractères maximum).',produit_invalide:'Miel invalide : un nom (2 à 80 caractères), au moins un miel visible.',photo_invalide:'Photo invalide.',verrouille:'Trop d’essais. Réessayez dans 10 minutes.'};
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.remove('hide'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.add('hide'),3500); }
+
+/* ---------- connexion, inactivité ---------- */
+async function load(){
+  const j=await rpc('admin_orders',{p:pw});
+  if(j.error){ logout(ERR[j.error]||'Erreur.'); return false; }
+  const prevMax=loaded?maxId():0;
+  orders=j.orders||[]; stock=j.stock||[]; prices=j.prices||[]; places=j.places||[]; bank=j.bank||bank; adminEmail=j.admin_email||''; products=j.products||[]; shop=j.shop||shop; mailInfo=j.mail||mailInfo;
+  const first=!loaded; const fresh=(!first&&maxId()>prevMax)?orders.filter(o=>o.id>prevMax):[];
+  if(!loaded){ loaded=true; try{ if(localStorage.getItem('xapi-seen')==null) localStorage.setItem('xapi-seen',String(maxId())); }catch(e){} }
+  $('#login').classList.add('hide'); $('#loginTop').classList.add('hide'); $('#shell').classList.remove('hide');
+  if(fresh.length) newOrderAlert(fresh);
+  if(first){ let sv=null; try{ sv=localStorage.getItem('xapi-view'); }catch(e){} go(sv&&TITLES[sv]?sv:'dash'); } else renderAll();
+  return true;
+}
+function logout(msg){
+  pw=null; loaded=false; try{sessionStorage.removeItem('xapi-admin')}catch(e){} clearInterval(timer); clearTimeout(idle);
+  $('#shell').classList.add('hide'); $('#login').classList.remove('hide'); $('#loginTop').classList.remove('hide'); $('#lerr').textContent=msg||''; $('#pw').value=''; document.title='Xapi · Commandes';
+}
+function armIdle(){ clearTimeout(idle); if(pw) idle=setTimeout(()=>logout('Session fermée après '+IDLE_MIN+' minutes d’inactivité.'),IDLE_MIN*60000); }
+['click','keydown','touchstart','mousemove'].forEach(ev=>document.addEventListener(ev,()=>{ if(pw) armIdle(); },{passive:true}));
+function started(){ clearInterval(timer); timer=setInterval(load,60000); armIdle(); }
+$('#go').onclick=async()=>{ $('#lerr').textContent=''; pw=$('#pw').value; if(!pw) return; $('#go').disabled=true; const ok=await load(); $('#go').disabled=false; if(ok){ try{sessionStorage.setItem('xapi-admin',pw)}catch(e){} started(); } };
+$('#pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#go').click(); });
+$('#out').onclick=()=>logout('');
+$('#refresh').onclick=async()=>{ await load(); toast('Actualisé.'); };
+
+/* ---------- navigation ---------- */
+const TITLES={dash:'Tableau de bord',orders:'Commandes',prep:'Préparation',stock:'Stock',stats:'Statistiques',settings:'Réglages',prod:'Miels',help:'Aide'};
+function go(v,f){
+  if(v!=='orders'||f) onlyId=(v==='orders'&&f)?null:onlyId; if(v!=='orders') onlyId=null;
+  view=v; if(f) filter=f; try{ localStorage.setItem('xapi-view',v); }catch(e){}
+  $$('[data-v]').forEach(s=>s.classList.toggle('hide',s.dataset.v!==v));
+  $$('#side nav button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  $('#mtitle').textContent=TITLES[v]; $('#side').classList.remove('open'); $('#burger').setAttribute('aria-expanded','false');
+  if(v==='orders'){ try{ localStorage.setItem('xapi-seen',String(maxId())); }catch(e){} }
+  renderAll(); window.scrollTo(0,0);
+}
+$('#side nav').addEventListener('click',e=>{ const b=e.target.closest('[data-view]'); if(b) go(b.dataset.view); });
+$('#burger').onclick=()=>{ const o=$('#side').classList.toggle('open'); $('#burger').setAttribute('aria-expanded',o); };
+document.addEventListener('click',e=>{ const g=e.target.closest('[data-go]'); if(g){ go(g.dataset.go,g.dataset.f); } });
+const maxId=()=>orders.reduce((a,o)=>Math.max(a,o.id),0);
+const seenId=()=>{ try{ return Number(localStorage.getItem('xapi-seen')||0); }catch(e){ return 0; } };
+
+/* ---------- rendu ---------- */
+function renderAll(){
+  const newN=view==='orders'?0:orders.filter(o=>o.id>seenId()&&o.status!=='annule').length;
+  const setP=(id,n)=>{ const e=$(id); e.textContent=n; e.classList.toggle('hide',!n); };
+  const lowN=stock.filter(r=>r.qty!=null&&r.qty<=LOW).length, prepN=orders.filter(o=>o.status==='paye'||o.status==='attente').length;
+  setP('#pNew',newN); setP('#pPrep',prepN); setP('#pStock',lowN);
+  document.title=(newN?`(${newN}) `:'')+'Xapi · Commandes';
+  ({dash:rDash,orders:rOrders,prep:rPrep,stock:rStock,stats:rStats,settings:rSettings,prod:rProd,help:()=>{}})[view]();
+}
+const sum=a=>a.reduce((s,o)=>s+Number(o.total),0);
+
+function orderCard(o){
+  const late=o.status==='attente'&&ageH(o)>48;
+  const acts={attente:[['paye','Marquer payé','pri'],['annule','Annuler','']],paye:[['retire','Marquer retiré','pri'],['attente','Remettre en attente','']],retire:[['paye','Rouvrir','']],annule:[['attente','Remettre en attente','']]}[o.status];
+  const c=String(o.contact||''); const link=/^[+\d][\d\s./-]{6,}$/.test(c)?`<a href="tel:${esc(c.replace(/[^\d+]/g,''))}">${esc(c)}</a>`:(/@/.test(c)?`<a href="mailto:${esc(c)}">${esc(c)}</a>`:esc(c));
+  return `<article class="order s-${o.status}"><div class="top"><span class="n">N° ${pad4(o.id)} · ${esc(o.customer_name)}</span><span><span class="badge b-${o.status}">${ST[o.status]}</span>${late?' <span class="badge late">+ de 48 h</span>':''}</span></div>
+    <div class="mono">${fmtD(o.created_at)} · ${esc(o.communication)}</div>
+    <ul>${itemLines(o).map(l=>`<li>${esc(l)}</li>`).join('')}</ul>
+    <div><b>${eur(o.total)}</b> · retrait : ${esc(o.pickup)}<br>Contact : ${link}${o.email&&o.email!==c?` · <a href="mailto:${esc(o.email)}">${esc(o.email)}</a>`:''}${o.note?`<br>Message : ${esc(o.note)}`:''}${o.reminded_at?`<br>Rappel envoyé le ${fmtD(o.reminded_at)}`:''}${o.paid_at?`<br>Payé le ${fmtD(o.paid_at)}`:''}${o.picked_at?` · retiré le ${fmtD(o.picked_at)}`:''}</div>
+    <div class="acts">${acts.map(([s,l,k])=>`<button class="sm ${k}" data-id="${o.id}" data-s="${s}" type="button">${l}</button>`).join('')}<button class="sm" data-edit="${o.id}" type="button">Modifier</button>${o.status==='annule'?`<button class="sm dg" data-del="${o.id}" type="button">Supprimer</button>`:''}</div></article>`;
+}
+
+function rDash(){
+  drawAlerts();
+  const wait=orders.filter(o=>o.status==='attente'), late=wait.filter(o=>ageH(o)>48), toPick=orders.filter(o=>o.status==='paye'||o.status==='attente');
+  const low=stock.filter(r=>r.qty!=null&&r.qty<=LOW), m=monthOf(new Date());
+  const cash=orders.filter(o=>(o.status==='paye'||o.status==='retire')&&monthOf(o.paid_at)===m);
+  const card=(go,f,small,big,sub,alert,cl)=>`<button type="button" class="card ${cl||''}" data-go="${go}"${f?` data-f="${f}"`:''}><small>${small}</small><b>${big}</b> <span class="mono">${sub}</span></button>`;
+  $('#todo').innerHTML=
+    card('orders','attente','À encaisser',wait.length,eur(sum(wait)),late.length>0,'c-pay')+
+    (late.length?card('orders','attente','Sans paiement depuis plus de 48 h',late.length,'à relancer ou annuler',true,'c-late'):'')+
+    card('prep','','À préparer',toPick.length,'dont '+toPick.filter(o=>o.status==='paye').length+' déjà payée(s)',false,'c-prep')+
+    card('stock','','Épuisé ou presque',low.length,low.length?low.map(r=>hn(r.honey)+' '+(TX[r.texture]||'')+' '+r.size+' : '+(r.qty===0?'épuisé':r.qty)).join(' · '):'rien à signaler',false,'c-stock')+
+    card('stats','','Encaissé ce mois-ci',eur(sum(cash)),cash.length+' commande(s)',false,'c-cash');
+  const rec=orders.slice(0,5);
+  $('#recent').innerHTML=rec.length?`<table><tr><th>N°</th><th>Client</th><th class="r">Total</th><th>Statut</th></tr>`+rec.map(o=>`<tr class="click" data-open="${o.id}" tabindex="0"><td>${pad4(o.id)}</td><td>${esc(o.customer_name)}</td><td class="r">${eur(o.total)}</td><td><span class="badge b-${o.status}">${ST[o.status]}</span></td></tr>`).join('')+`</table>`:'<p>Aucune commande pour l’instant.</p>';
+}
+
+function rOrders(){
+  const cnt=s=>orders.filter(o=>s==='tous'||o.status===s).length;
+  $('#filters').innerHTML=`<div class="tiles" style="width:100%">`+[['attente','En attente','t-no'],['paye','Payées','t-ok'],['retire','Payées et retirées','t-gr'],['annule','Annulées','t-ko'],['tous','Toutes','t-all']].map(([k,l,c])=>`<button class="tile ${c}${filter===k?' sel':''}" data-f="${k}" type="button"><small>${l}</small><b>${cnt(k)}</b></button>`).join('')+`</div>`;
+  const qq=query.trim().toLowerCase();
+  const L=onlyId?orders.filter(o=>o.id===onlyId):orders.filter(o=>(filter==='tous'||o.status===filter)&&(!qq||(`${o.id} ${o.customer_name} ${o.contact} ${o.email||''}`).toLowerCase().includes(qq)));
+  $('#filters').innerHTML=onlyId?`<button class="chip on" data-all="1" type="button">← Toutes les commandes</button>`:$('#filters').innerHTML;
+  $('#list').innerHTML=L.length?L.map(orderCard).join(''):'<p>Aucune commande dans cette liste.</p>';
+}
+
+function prepGroups(){ const by={}; orders.filter(o=>o.status==='paye'||o.status==='attente').forEach(o=>{ (by[o.pickup]=by[o.pickup]||[]).push(o); }); return by; }
+function prepHtml(forPrint){
+  const by=prepGroups(), P=orders.filter(o=>o.status==='paye'||o.status==='attente').sort((x,y)=>x.id-y.id);
+  const paid=P.filter(o=>o.status==='paye'), unpaid=P.filter(o=>o.status==='attente');
+  const pots=l=>l.reduce((a,o)=>a+(o.items||[]).reduce((b,i)=>b+Number(i.qty),0),0);
+  const dt=esc(new Date().toLocaleDateString('fr-BE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
+  if(!P.length) return forPrint?`<h2>Xapi · Préparation</h2><p>${dt}</p><p>Aucune commande à préparer.</p>`:'<div class="box"><b>Rien à préparer pour l\'instant.</b></div>';
+  const tiles=`<div class="tiles"><div class="tile t-all"><small>Commandes à préparer</small><b>${P.length}</b></div><div class="tile t-ok"><small>Déjà payées</small><b>${paid.length}</b>à remettre</div><div class="tile t-no"><small>Pas encore payées</small><b>${unpaid.length}</b>${eur(sum(unpaid))} à encaisser</div><div class="tile t-pots"><small>Pots à sortir</small><b>${pots(P)}</b></div></div>`;
+  const tot={}; P.forEach(o=>(o.items||[]).forEach(i=>{ const n=`${hn(i.honey)} · ${TX[i.texture]||i.texture} · ${i.size}`; tot[n]=(tot[n]||0)+Number(i.qty); }));
+  const totTable=`<table><tr><th>À sortir au total</th><th class="r">Pots</th></tr>${Object.keys(tot).sort().map(n=>`<tr><td>${esc(n)}</td><td class="r"><b>${tot[n]}</b></td></tr>`).join('')}</table>`;
+  const payTxt=o=>o.status==='attente'?`<span class="pay no">${forPrint?'À ENCAISSER':'⚠ Pas payé'}</span>`:`<span class="pay ok">✓ Payé</span>`;
+  const groups=Object.keys(by).sort().map(k=>{
+    const L=by[k].slice().sort((x,y)=>x.id-y.id), np=L.filter(o=>o.status==='attente').length, paidN=L.length-np;
+    const rows=L.map(o=>`<tr${forPrint?'':` class="click" data-open="${o.id}" tabindex="0"`}>${forPrint?'<td>☐</td>':''}<td><b>${pad4(o.id)}</b></td><td>${esc(o.customer_name)}<br><small>${esc(o.email||o.contact)}</small></td><td>${(o.items||[]).map(i=>`${i.qty} × ${esc(hn(i.honey))} ${esc(TX[i.texture]||i.texture)} ${esc(i.size)}`).join('<br>')}${o.note?`<br><i>${esc(o.note)}</i>`:''}</td><td class="r">${eur(o.total)}</td><td>${payTxt(o)}${!forPrint&&o.status==='attente'?`<br><button class="sm pri" data-id="${o.id}" data-s="paye" type="button">Marquer payé</button>`:''}</td></tr>`).join('');
+    const head=`${esc(k)} <span class="mono">${L.length} commande(s) · ${pots(L)} pot(s)${np?` · ${np} à encaisser`:''}</span>`;
+    const tb=`<table>${'<tr>'+(forPrint?'<th></th>':'')+'<th>N°</th><th>Client</th><th>Pots</th><th class="r">Total</th><th>Paiement</th></tr>'}${rows}</table>`;
+    return forPrint?`<h3>${head}</h3>${tb}`:`<div class="box pp"><h3>${head}</h3><div style="overflow:auto">${tb}</div>${paidN?`<button class="sm pri" data-pickall="${esc(k)}" type="button" style="margin-top:10px">Tout marquer comme retiré (${paidN} commande(s) payée(s))</button>`:''}</div>`;
+  }).join('');
+  const note='';
+  return forPrint?`<h2>Xapi · Préparation des commandes</h2><p>${dt}</p>${tiles}${totTable}<br>${groups}${note}`:`${tiles}<div class="box">${totTable}</div>${groups}${note}`;
+}
+function rPrep(){ $('#prepView').innerHTML=prepHtml(false); }
+$('#prn').onclick=()=>{
+  const el=$('#prep'); el.innerHTML=prepHtml(true); el.classList.remove('hide'); el.classList.add('printing');
+  const done=()=>{ el.classList.add('hide'); el.classList.remove('printing'); window.removeEventListener('afterprint',done); };
+  window.addEventListener('afterprint',done); window.print();
+};
+
+function rStock(){
+  if($('#stockrows').contains(document.activeElement)) return;
+  const g=(h,t,z)=>{ const r=stock.find(x=>x.honey===h&&x.texture===t&&x.size===z); return r?r.qty:null; };
+  $('#stockrows').innerHTML=`<table><tr><th>Miel</th>${allSizes().map(z=>`<th>${esc(z)}</th>`).join('')}</tr>`+SLf().map(([h,t,l])=>`<tr><td>${esc(l)}</td>`+allSizes().map(z=>{
+    if(!sizesFor(products.find(x=>x.id===h),t).includes(z)) return '<td style="color:#999;text-align:center">—</td>';
+    const v=g(h,t,z), mode=v==null?'dispo':(v===0?'epuise':'nombre'), k=`${h}|${t}|${z}`;
+    return `<td class="${v!=null&&v<=LOW?'low':''}" data-cell="${k}"><select data-mode="${k}" aria-label="${l} ${z}"><option value="dispo"${mode==='dispo'?' selected':''}>Disponible</option><option value="epuise"${mode==='epuise'?' selected':''}>Épuisé</option><option value="nombre"${mode==='nombre'?' selected':''}>Nombre exact</option></select><input type="number" min="1" max="9999" data-sk="${k}" value="${v>0?v:''}" placeholder="pots" class="${mode==='nombre'?'':'hide'}" style="margin-top:4px" aria-label="Nombre de pots ${l} ${z}"></td>`; }).join('')+`</tr>`).join('')+`</table>`;
+}
+$('#stockrows').addEventListener('change',e=>{ const m=e.target.dataset.mode; if(!m) return; const inp=$(`[data-sk="${m}"]`); inp.classList.toggle('hide',e.target.value!=='nombre'); if(e.target.value==='nombre') inp.focus(); });
+$('#stb').onclick=async()=>{
+  const arr=[]; for(const sel of $$('[data-mode]')){ const k=sel.dataset.mode, [h,t,z]=k.split('|'); let q=null; if(sel.value==='epuise') q=0; if(sel.value==='nombre'){ const n=parseInt($(`[data-sk="${k}"]`).value,10); if(!(n>=0)){ toast('Indiquez le nombre de pots pour '+k.split('|').join(' ')+'.'); return; } q=n; } arr.push({honey:h,texture:t,size:z,qty:q}); }
+  const j=await rpc('admin_set_stock',{p:pw,p_stock:arr}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast('Stock enregistré.'); await load();
+};
+
+const PAL=['#E9A820','#3B6EA5','#3E8E4F','#7A5BA6','#B04A40','#2E8B8B','#8A7456'];
+function colChart(data,fmt){ const mx=Math.max(1,...data.map(d=>d[1])), W=320, H=170, base=135, bw=34, gap=(W-data.length*bw)/(data.length+1); let o=`<svg viewBox="0 0 ${W} ${H}" role="img" style="width:100%;height:auto">`;
+  data.forEach((d,i)=>{ const h=Math.round(d[1]/mx*100), x=gap+i*(bw+gap); o+=`<rect x="${x}" y="${base-h}" width="${bw}" height="${Math.max(h,d[1]>0?2:0)}" fill="#E9A820" stroke="#3A2410" stroke-width="1.5"/>${d[1]>0?`<text x="${x+bw/2}" y="${base-h-5}" text-anchor="middle" style="font-weight:700">${esc(fmt(d[1]))}</text>`:''}<text x="${x+bw/2}" y="${base+16}" text-anchor="middle">${esc(d[0])}</text>`; });
+  return o+`<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="#3A2410" stroke-width="1.5"/></svg>`; }
+function donut(data,colors){ const tot=data.reduce((a,d)=>a+d[1],0); if(!tot) return '<p>Rien pour l’instant.</p>'; let acc=0; const seg=data.map((d,i)=>{ const c=(colors&&colors[i])||PAL[i%PAL.length], a0=acc/tot*100; acc+=d[1]; return `${c} ${a0}% ${acc/tot*100}%`; }).join(',');
+  return `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:8px"><div role="img" aria-label="Répartition" style="width:120px;height:120px;border-radius:50%;background:conic-gradient(${seg});border:2px solid #3A2410;position:relative;flex:none"><div style="position:absolute;inset:28px;border-radius:50%;background:var(--label);border:2px solid #3A2410;display:grid;place-items:center;font-weight:800">${tot}</div></div><ul style="list-style:none;margin:0;padding:0;flex:1;min-width:140px">${data.map((d,i)=>`<li style="display:flex;gap:8px;align-items:baseline;margin:3px 0"><i style="width:14px;height:14px;background:${(colors&&colors[i])||PAL[i%PAL.length]};border:1.5px solid #3A2410;flex:none;transform:translateY(2px)"></i><span style="flex:1">${esc(d[0])}</span><b>${d[1]} <small>(${Math.round(d[1]/tot*100)} %)</small></b></li>`).join('')}</ul></div>`; }
+const inMonth=(o,m)=>m==='tout'||monthOf(o.created_at)===m||monthOf(o.paid_at)===m;
+function rStats(){
+  const ms=[...new Set(orders.flatMap(o=>[monthOf(o.created_at),monthOf(o.paid_at)]).filter(Boolean))].sort().reverse();
+  if(!ms.includes(month)&&month!=='tout') month='tout';
+  $('#month').innerHTML=['tout',...ms].map(m=>`<option value="${m}"${m===month?' selected':''}>${monthLabel(m)}</option>`).join('');
+  const inM=o=>month==='tout'||monthOf(o.created_at)===month;
+  const paidM=o=>(o.status==='paye'||o.status==='retire')&&(month==='tout'||monthOf(o.paid_at)===month);
+  const pend=orders.filter(o=>o.status==='attente'&&inM(o)), cash=orders.filter(paidM), toPick=orders.filter(o=>o.status==='paye');
+  $('#cards').innerHTML=`<div class="card c-cash"><small>Encaissé</small><b>${eur(sum(cash))}</b> <span class="mono">${cash.length} commande(s)</span></div>
+    <div class="card c-pay"><small>En attente de paiement</small><b>${eur(sum(pend))}</b> <span class="mono">${pend.length} commande(s)</span></div>
+    <div class="card c-prep"><small>Payé, à remettre</small><b>${toPick.length}</b> <span class="mono">${eur(sum(toPick))}</span></div>`;
+  const lastM=[]; { const d=new Date(); for(let i=5;i>=0;i--){ const x=new Date(d.getFullYear(),d.getMonth()-i,1,12); lastM.push(x.toLocaleDateString('fr-CA',{year:'numeric',month:'2-digit'}).slice(0,7)); } }
+  const cashBy=lastM.map(m=>[new Date(m+'-01T12:00:00').toLocaleDateString('fr-BE',{month:'short',year:'2-digit'}),orders.filter(o=>(o.status==='paye'||o.status==='retire')&&monthOf(o.paid_at)===m).reduce((a,o)=>a+Number(o.total),0)]);
+  const potsBy={}; cash.forEach(o=>(o.items||[]).forEach(i=>{ const k=hn(i.honey)+' '+(TX[i.texture]||i.texture); potsBy[k]=(potsBy[k]||0)+Number(i.qty); }));
+  const pickBy={}; orders.filter(o=>o.status!=='annule'&&inM(o)).forEach(o=>{ const k=String(o.pickup).split(',')[0].replace(/^Mini-Marché de /,'').slice(0,28); pickBy[k]=(pickBy[k]||0)+1; });
+  const arr=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);
+  $('#charts').innerHTML=`<div class="card"><small>Encaissé, 6 derniers mois</small>${colChart(cashBy,v=>Math.round(v)+' €')}</div>`+
+    `<div class="card"><small>Pots vendus par miel</small>${arr(potsBy).length?donut(arr(potsBy)):'<p>Pas encore de vente.</p>'}</div>`+
+    `<div class="card"><small>Commandes par lieu de retrait</small>${arr(pickBy).length?donut(arr(pickBy)):'<p>Pas encore de commande.</p>'}</div>`+
+    `<div class="card"><small>Statut des commandes</small>${donut(['attente','paye','retire','annule'].map(k=>[ST[k],orders.filter(o=>o.status===k&&inM(o)).length]).filter(d=>d[1]>0),['#E9A820','#3E8E4F','#999','#B04A40'].filter((c,i)=>orders.some(o=>o.status===['attente','paye','retire','annule'][i]&&inM(o))))}</div>`;
+  const rows={}; const get=m=>rows[m]||(rows[m]={cash:0,cn:0,pend:0,pn:0});
+  orders.forEach(o=>{ if(o.status==='paye'||o.status==='retire'){ const r=get(monthOf(o.paid_at)); r.cash+=Number(o.total); r.cn++; } else if(o.status==='attente'){ const r=get(monthOf(o.created_at)); r.pend+=Number(o.total); r.pn++; } });
+  const mk=Object.keys(rows).sort().reverse();
+  $('#monthly').innerHTML=mk.length?`<table><tr><th>Mois</th><th class="r">Encaissé (date de paiement)</th><th class="r">En attente (date de commande)</th></tr>`+mk.map(m=>`<tr><td>${monthLabel(m)}</td><td class="r">${eur(rows[m].cash)} (${rows[m].cn})</td><td class="r">${eur(rows[m].pend)} (${rows[m].pn})</td></tr>`).join('')+`</table>`:'<p>Aucune commande pour l’instant.</p>';
+  const pots={}; cash.forEach(o=>(o.items||[]).forEach(i=>{ const k=`${hn(i.honey)} ${TX[i.texture]||i.texture} ${i.size} (${eur(i.unit)})`; pots[k]=(pots[k]||0)+Number(i.qty); }));
+  const pk=Object.keys(pots).sort(); $('#potsLabel').textContent='· '+monthLabel(month);
+  $('#pots').innerHTML=pk.length?`<table><tr><th>Miel</th><th class="r">Pots</th></tr>`+pk.map(k=>`<tr><td>${esc(k)}</td><td class="r">${pots[k]}</td></tr>`).join('')+`<tr><th>Total</th><th class="r">${Object.values(pots).reduce((a,b)=>a+b,0)}</th></tr></table>`:'<p>Aucun pot payé sur cette période.</p>';
+}
+$('#month').onchange=e=>{ month=e.target.value; rStats(); };
+$('#csv').onclick=()=>{
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const head=['Date de commande','Date de paiement','N° commande','Communication','Nom client','Contact','E-mail','Retrait','Détail','Total TTC (EUR)','Statut'];
+  const L=orders.filter(o=>inMonth(o,month)).slice().sort((a,b)=>a.id-b.id);
+  const rows=L.map(o=>[fmtD(o.created_at),fmtD(o.paid_at),o.id,o.communication,o.customer_name,o.contact,o.email||'',o.pickup,itemLines(o).join(' + '),Number(o.total).toFixed(2).replace('.',','),ST[o.status]]);
+  const csv='﻿'+[head,...rows].map(r=>r.map(q).join(';')).join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='xapi-commandes-'+(month==='tout'?'toutes':month)+'.csv'; document.body.appendChild(a); a.click(); a.remove();
+};
+
+/* ---------- réglages ---------- */
+let placeDraft=null;
+function rSettings(){
+  if(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#content section[data-v="settings"]')&&document.activeElement.tagName==='INPUT') return;
+  placeDraft=places.map(p=>({...p})); drawPlaces();
+  if(document.activeElement!==$('#aem')) $('#aem').value=adminEmail;
+  drawPause(); if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#content section[data-v="settings"]'))){ $('#shMsg').value=shop.pause_message||''; $('#shBan').value=shop.banner||''; }
+  $('#bankNow').innerHTML=bank.iban?`<small>Compte actuellement utilisé par le site</small><br><b class="mono">${esc(bank.iban)}</b> · ${esc(bank.beneficiary||'')}`:'<b style="color:var(--brick)">Aucun compte enregistré : renseignez-le ci-dessous.</b>';
+  $('#bn').value=bank.beneficiary||''; $('#bi').value=bank.iban||'';
+}
+function drawPlaces(){
+  $('#placeRows').innerHTML=placeDraft.map((p,i)=>`<div class="pl"><input type="text" value="${esc(p.name)}" data-pn="${i}" maxlength="120" aria-label="Nom du lieu"><label style="display:flex;gap:4px;align-items:center"><input type="checkbox" data-pa="${i}" ${p.active?'checked':''}> Actif</label><button class="sm" type="button" data-pu="${i}" aria-label="Monter">↑</button><button class="sm" type="button" data-pd="${i}" aria-label="Descendre">↓</button></div>`).join('');
+}
+$('#placeRows').addEventListener('input',e=>{ const n=e.target.dataset.pn, a=e.target.dataset.pa; if(n!=null) placeDraft[n].name=e.target.value; if(a!=null) placeDraft[a].active=e.target.checked; });
+$('#placeRows').addEventListener('click',e=>{ const u=e.target.dataset.pu, d=e.target.dataset.pd; const mv=(i,j)=>{ if(j<0||j>=placeDraft.length) return; [placeDraft[i],placeDraft[j]]=[placeDraft[j],placeDraft[i]]; drawPlaces(); }; if(u!=null) mv(+u,+u-1); if(d!=null) mv(+d,+d+1); });
+$('#pladd').onclick=()=>{ placeDraft.push({name:'',active:true}); drawPlaces(); };
+$('#plb').onclick=async()=>{ const j=await rpc('admin_set_places',{p:pw,p_places:placeDraft.map(p=>({id:p.id||null,name:p.name,active:p.active}))}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast('Lieux enregistrés.'); await load(); };
+$('#bkb').onclick=async()=>{ if(!confirm('Changer le compte bancaire affiché aux clients ?')) return; const j=await rpc('admin_set_bank',{p:pw,p_iban:$('#bi').value,p_benef:$('#bn').value}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast('Compte bancaire enregistré.'); await load(); };
+$('#aemb').onclick=async()=>{ const j=await rpc('admin_set_email',{p:pw,p_email:$('#aem').value}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast('E-mail d’alerte enregistré.'); await load(); };
+$('#npb').onclick=async()=>{ const a=$('#np1').value,b=$('#np2').value; if(a!==b){ toast('Les deux mots de passe sont différents.'); return; } const j=await rpc('admin_change_password',{p:pw,p_new:a}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } pw=a; try{sessionStorage.setItem('xapi-admin',pw)}catch(e){} $('#np1').value=$('#np2').value=''; toast('Mot de passe changé.'); };
+
+/* ---------- actions sur les commandes ---------- */
+$('#q').addEventListener('input',e=>{ query=e.target.value; rOrders(); });
+document.addEventListener('click',async e=>{
+  const f=e.target.closest('[data-f]:not([data-go])'); if(f){ filter=f.dataset.f; rOrders(); return; }
+  const b=e.target.closest('[data-s]'); if(b){
+    if(b.dataset.s==='annule'&&!confirm('Annuler cette commande ?')) return;
+    b.disabled=true; const j=await rpc('admin_set_status',{p:pw,p_id:Number(b.dataset.id),p_status:b.dataset.s});
+    if(j.error){ toast(ERR[j.error]||'Erreur.'); b.disabled=false; return; } await load(); return; }
+  const d=e.target.closest('[data-del]'); if(d){ if(!confirm('Supprimer définitivement cette commande annulée ?')) return; d.disabled=true; const j=await rpc('admin_delete_order',{p:pw,p_id:Number(d.dataset.del)}); if(j.error){ toast(ERR[j.error]||'Erreur.'); d.disabled=false; return; } toast('Commande supprimée.'); await load(); return; }
+  const ed=e.target.closest('[data-edit]'); if(ed){ openEdit(Number(ed.dataset.edit)); return; }
+  const pa=e.target.closest('[data-pickall]'); if(pa){
+    const k=pa.dataset.pickall, L=(prepGroups()[k]||[]).filter(o=>o.status==='paye'); if(!L.length||!confirm('Marquer ces '+L.length+' commande(s) comme retirées ?')) return;
+    pa.disabled=true; for(const o of L){ const j=await rpc('admin_set_status',{p:pw,p_id:o.id,p_status:'retire'}); if(j.error){ toast(ERR[j.error]||'Erreur.'); break; } } toast('Commandes marquées retirées.'); await load(); }
+});
+
+/* ---------- modification d'une commande ---------- */
+let editId=null;
+const optH=v=>products.map(p=>`<option value="${esc(p.id)}"${v===p.id?' selected':''}>${esc(p.name)}</option>`).join('');
+const optZ=(h,t,v)=>{ const p=products.find(x=>x.id===h); let z=sizesFor(p,t); if(v&&!z.includes(v)) z=[...z,v]; if(!z.length) z=[v||'250 g']; return z.map(x=>`<option${x===v?' selected':''}>${esc(x)}</option>`).join(''); };
+function itemRow(i){ i=i||{honey:(products[0]||{}).id,texture:'classique',size:'',qty:1}; if(!i.size){ const z=sizesFor(products.find(x=>x.id===i.honey),i.texture); i.size=z[0]||'250 g'; } return `<div class="itm"><select class="h">${optH(i.honey)}</select><select class="t"><option value="classique"${i.texture==='classique'?' selected':''}>classique</option><option value="cremeux"${i.texture==='cremeux'?' selected':''}>crémeux</option></select><select class="z">${optZ(i.honey,i.texture,i.size)}</select><input class="q" type="number" min="1" max="30" value="${i.qty}" aria-label="Quantité"><button type="button" class="x sm" aria-label="Retirer">×</button></div>`; }
+function readItems(){ return $$('#eit .itm').map(r=>({honey:r.querySelector('.h').value,texture:r.querySelector('.t').value,size:r.querySelector('.z').value,qty:parseInt(r.querySelector('.q').value,10)||0})); }
+function editTotal(){
+  const o=orders.find(x=>x.id===editId)||{items:[]}; const cur=(h,t,z)=>{ const pp=products.find(x=>x.id===h); const v=pp&&pp.prices?pp.prices[t+'|'+z]:null; return v==null?0:Number(v); };
+  const unit=i=>{ const old=(o.items||[]).find(x=>x.honey===i.honey&&x.texture===i.texture&&x.size===i.size); return old?Number(old.unit):cur(i.honey,i.texture,i.size); };
+  $('#etot').textContent='Total : '+eur(readItems().reduce((a,i)=>a+unit(i)*i.qty,0));
+}
+function openEdit(id){ const o=orders.find(x=>x.id===id); if(!o) return; editId=id; $('#edt').textContent='Commande n° '+pad4(id); $('#en').value=o.customer_name; $('#ee').value=o.email||(/@/.test(o.contact)?o.contact:''); $('#ep').value=o.pickup; $('#em').value=o.note||'';
+  $('#pl').innerHTML=places.filter(p=>p.active).map(p=>`<option value="${esc(p.name)}">`).join('');
+  $('#eit').innerHTML=(o.items||[]).map(itemRow).join(''); $('#eerr').textContent=(o.status==='paye'||o.status==='retire')?'Cette commande est déjà payée : si le montant change, pensez au remboursement ou au complément.':''; editTotal(); $('#ed').showModal(); }
+$('#eadd').onclick=()=>{ $('#eit').insertAdjacentHTML('beforeend',itemRow()); editTotal(); };
+$('#eit').addEventListener('input',editTotal); $('#eit').addEventListener('change',e=>{ const r=e.target.closest('.itm'); if(r&&(e.target.classList.contains('h')||e.target.classList.contains('t'))){ r.querySelector('.z').innerHTML=optZ(r.querySelector('.h').value,r.querySelector('.t').value,''); } editTotal(); });
+$('#eit').addEventListener('click',e=>{ const x=e.target.closest('.x'); if(x){ x.parentElement.remove(); editTotal(); } });
+$('#ecancel').onclick=()=>$('#ed').close();
+$('#esave').onclick=async()=>{ const b=$('#esave'); b.disabled=true; const j=await rpc('admin_update_order',{p:pw,p_id:editId,p_name:$('#en').value,p_contact:$('#ee').value,p_email:$('#ee').value,p_pickup:$('#ep').value,p_note:$('#em').value,p_items:readItems()}); b.disabled=false; if(j.error){ $('#eerr').textContent=ERR[j.error]||'Erreur.'; return; } $('#ed').close(); toast('Commande modifiée.'); await load(); };
+
+if(pw){ load().then(ok=>{ if(ok) started(); }); }
+
+/* ---------- boutique : pause + bandeau ---------- */
+function drawPause(){ const p=!!shop.paused; $('#pauseState').innerHTML=p?`<div style="background:#B04A40;color:#fff;border:3px solid #3A2410;padding:14px;font-size:1.2rem;font-weight:800">⛔ Les commandes sont SUSPENDUES<br><span style="font-weight:600;font-size:1rem">Les clients voient votre message et ne peuvent pas commander.</span></div>`:`<div style="background:#D5EBD8;border:3px solid #3E8E4F;padding:14px;font-size:1.2rem;font-weight:800">✅ Les commandes sont OUVERTES<br><span style="font-weight:600;font-size:1rem">Les clients peuvent commander normalement.</span></div>`;
+  const t=$('#shToggle'); t.textContent=p?'✅ Rouvrir les commandes':'⛔ Suspendre les commandes'; t.className=p?'pri':'dg'; t.style.background=p?'#3E8E4F':'#B04A40'; t.style.color='#fff'; $('#shSave').classList.toggle('hide',!p); }
+async function setPause(v){ const j=await rpc('admin_set_shop',{p:pw,p_paused:v,p_pause_message:$('#shMsg').value.trim(),p_banner:shop.banner||''}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast(v?'Commandes suspendues.':'Commandes rouvertes.'); await load(); }
+$('#shToggle').onclick=()=>setPause(!shop.paused);
+$('#shSave').onclick=()=>setPause(true);
+$('#shBanSave').onclick=async()=>{ const j=await rpc('admin_set_shop',{p:pw,p_paused:!!shop.paused,p_pause_message:shop.pause_message||'',p_banner:$('#shBan').value.trim()}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast('Bandeau enregistré.'); await load(); };
+
+/* ---------- alertes du tableau de bord ---------- */
+function drawAlerts(){
+  let h='';
+  if(!mailInfo.configured) h+=`<div class="box" style="border-color:#B04A40"><b>Les e-mails ne sont pas encore configurés.</b> Les clients ne reçoivent rien et vous non plus. Prévenez Jonathan.</div>`;
+  if(mailInfo.failures>0) h+=`<div class="box" style="border-color:#B04A40"><b>${mailInfo.failures} e-mail(s) n'ont pas pu partir.</b> Des clients n'ont peut-être pas reçu leurs détails de paiement. Prévenez Jonathan (la clé d'envoi est peut-être expirée). <button class="sm" id="ackMail" type="button">J'ai compris</button></div>`;
+  if(shop.paused) h+=`<div class="box" style="background:#B04A40;color:#fff;border-color:#3A2410;font-size:1.15rem"><b>⛔ LES COMMANDES SONT SUSPENDUES</b> : les clients ne peuvent pas commander. <button class="sm" data-go="settings" type="button">Réglages</button></div>`;
+  $('#alerts').innerHTML=h;
+}
+document.addEventListener('click',async e=>{ if(e.target.id==='ackMail'){ const j=await rpc('admin_ack_mail',{p:pw}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } await load(); } });
+
+/* ---------- catalogue des miels ---------- */
+let prodDraft=null, prodDirty=false;
+const kLabel=k=>{ const [t,z]=k.split('|'); return (t==='cremeux'?'Crémeux ':'Classique ')+z; };
+const extraKeys=p=>Object.keys(p.prices).filter(k=>!SLOTS.some(x=>x[0]===k)).sort((a,b)=>gram(a.split('|')[1])-gram(b.split('|')[1]));
+const SLOTS=[['classique|250 g','Classique 250 g'],['classique|500 g','Classique 500 g'],['cremeux|250 g','Crémeux 250 g'],['cremeux|500 g','Crémeux 500 g']];
+function rProd(){
+  if(!prodDraft||!prodDirty) prodDraft=products.map(p=>({id:p.id,name:p.name,notes:p.notes||'',tech:(p.tech||[]).map(r=>[r[0],r[1]]),photos:{...(p.photos||{})},prices:{...(p.prices||{})},visible:p.visible!==false}));
+  drawProd();
+}
+function drawProd(){
+  $('#prodRows').innerHTML=prodDraft.map((p,i)=>`<div class="box" data-pi="${i}">
+    <div class="bar" style="justify-content:space-between"><b>${p.id?'':'Nouveau miel · '}${esc(p.name||'(sans nom)')}</b><span><button class="sm" data-pm="up" type="button" aria-label="Monter"${i?'':' disabled'}>↑</button> <button class="sm" data-pm="down" type="button" aria-label="Descendre"${i<prodDraft.length-1?'':' disabled'}>↓</button></span></div>
+    <label><b>Nom affiché</b></label><input type="text" data-pf="name" maxlength="80" value="${esc(p.name)}">
+    <label style="display:block;margin-top:8px"><b>Texte de présentation</b></label><textarea data-pf="notes" maxlength="400">${esc(p.notes)}</textarea>
+    <label style="display:block;margin-top:8px"><b>Caractéristiques</b> (ex. Récolte : Été 2027)</label>
+    ${p.tech.map((r,j)=>`<div class="itm" style="grid-template-columns:1fr 1fr 30px"><input type="text" data-pt="0" data-j="${j}" maxlength="40" value="${esc(r[0])}" aria-label="Libellé"><input type="text" data-pt="1" data-j="${j}" maxlength="60" value="${esc(r[1])}" aria-label="Valeur"><button type="button" class="x sm" data-ptx="${j}" aria-label="Retirer">×</button></div>`).join('')}
+    ${p.tech.length<8?'<button type="button" class="sm" data-pta="1">+ Ajouter une ligne</button>':''}
+    <label style="display:block;margin-top:10px"><b>Variantes et prix</b> (cochez ce qui est en vente pour ce miel, avec son prix)</label>
+    <div class="vgrid">${SLOTS.map(([k,l])=>{ const v=p.prices[k]; const on=v!=null; return `<div><label class="sw"><input type="checkbox" data-pv="${k}"${on?' checked':''}> <b>${l}</b></label><div class="sw" style="margin-top:4px"><input type="number" step="0.01" min="0.01" max="500" data-pp="${k}" value="${on?v:''}" ${on?'':'disabled '}style="max-width:90px" aria-label="Prix ${l}"> €</div></div>`; }).join('')}${extraKeys(p).map(k=>`<div style="background:#F3EAFB"><div class="sw"><b>${esc(kLabel(k))}</b> <button type="button" class="x sm" data-pvx="${esc(k)}" aria-label="Retirer cette variante">×</button></div><div class="sw" style="margin-top:4px"><input type="number" step="0.01" min="0.01" max="500" data-pp="${esc(k)}" value="${p.prices[k]}" style="max-width:90px" aria-label="Prix ${esc(kLabel(k))}"> €</div></div>`).join('')}</div>
+    <div class="sw" style="margin-top:8px"><small><b>Autre variante :</b></small> <select data-nt aria-label="Type"><option value="classique">Classique</option><option value="cremeux">Crémeux</option></select> <input type="text" data-ns placeholder="ex. 1 kg" maxlength="10" style="max-width:90px" aria-label="Taille"> <input type="number" step="0.01" min="0.01" max="500" data-npr placeholder="Prix" style="max-width:80px" aria-label="Prix"> € <button type="button" class="sm" data-addvar="1">+ Ajouter</button></div>
+    <label style="display:block;margin-top:10px"><b>Photos des pots</b> (touchez un cadre pour envoyer une photo ; sans photo, une image par défaut s'affiche)</label>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px">${[...SLOTS,...extraKeys(p).map(k=>[k,kLabel(k)])].map(([k,l])=>{ const u=p.photos[k]; return `<div style="text-align:center"><label style="display:block;border:1px dashed #B87A0C;border-radius:8px;padding:6px;cursor:pointer;min-height:96px">${u?`<img src="${esc(u)}" alt="" style="max-width:100%;max-height:90px;display:block;margin:0 auto">`:'<span style="display:block;padding-top:30px;color:#6B5A43">+ photo</span>'}<input type="file" accept="image/*" data-ph="${k}" class="hide"></label><small>${l}</small>${u?` <button type="button" class="sm" data-phx="${k}">Retirer</button>`:''}</div>`; }).join('')}</div>
+    <label style="display:block;margin-top:10px"><input type="checkbox" data-pf="visible"${p.visible?' checked':''}> Visible sur le site</label>
+  </div>`).join('');
+}
+$('#prodRows').addEventListener('input',e=>{ const b=e.target.closest('[data-pi]'); if(!b) return; const p=prodDraft[+b.dataset.pi]; prodDirty=true;
+  if(e.target.dataset.pf==='name') p.name=e.target.value; else if(e.target.dataset.pf==='notes') p.notes=e.target.value; else if(e.target.dataset.pt!=null) p.tech[+e.target.dataset.j][+e.target.dataset.pt]=e.target.value; else if(e.target.dataset.pp){ const v=parseFloat(e.target.value); if(v>0) p.prices[e.target.dataset.pp]=v; } });
+$('#prodRows').addEventListener('change',async e=>{ const b=e.target.closest('[data-pi]'); if(!b) return; const p=prodDraft[+b.dataset.pi];
+  if(e.target.dataset.pv){ const k=e.target.dataset.pv, inp=b.querySelector(`[data-pp="${k}"]`); prodDirty=true; if(e.target.checked){ const d={'classique|250 g':6,'classique|500 g':10,'cremeux|250 g':7,'cremeux|500 g':11}[k]; p.prices[k]=p.prices[k]||d; inp.disabled=false; inp.value=p.prices[k]; } else { delete p.prices[k]; inp.disabled=true; inp.value=''; } return; }
+  if(e.target.dataset.pf==='visible'){ p.visible=e.target.checked; prodDirty=true; return; }
+  if(e.target.dataset.ph&&e.target.files[0]){ prodDirty=true; toast('Envoi de la photo…'); const u=await uploadPhoto(e.target.files[0]); if(!u) return; p.photos[e.target.dataset.ph]=u; drawProd(); toast('Photo ajoutée : pensez à enregistrer.'); } });
+$('#prodRows').addEventListener('click',e=>{ const b=e.target.closest('[data-pi]'); if(!b) return; const i=+b.dataset.pi, p=prodDraft[i]; const t=e.target;
+  if(t.dataset.pm){ const k=t.dataset.pm==='up'?i-1:i+1; [prodDraft[i],prodDraft[k]]=[prodDraft[k],prodDraft[i]]; prodDirty=true; drawProd(); }
+  else if(t.dataset.pta){ p.tech.push(['','']); prodDirty=true; drawProd(); }
+  else if(t.dataset.ptx!=null){ p.tech.splice(+t.dataset.ptx,1); prodDirty=true; drawProd(); }
+  else if(t.dataset.pvx){ delete p.prices[t.dataset.pvx]; prodDirty=true; drawProd(); }
+  else if(t.dataset.addvar){ const z=b.querySelector('[data-ns]').value.trim().toLowerCase().replace(/\s+/g,' '), tx=b.querySelector('[data-nt]').value, pr=parseFloat(b.querySelector('[data-npr]').value); if(!/^[0-9]{1,4}(,[0-9]{1,2})? ?(g|kg)$/.test(z)||!(pr>0)){ toast('Indiquez une taille (ex. 1 kg, 125 g) et un prix.'); return; } const zz=z.replace(/^(\d+(?:,\d+)?)\s*(g|kg)$/,'$1 $2'); p.prices[tx+'|'+zz]=pr; prodDirty=true; drawProd(); }
+  else if(t.dataset.phx){ delete p.photos[t.dataset.phx]; prodDirty=true; drawProd(); } });
+$('#prAdd').onclick=()=>{ prodDraft.push({id:'',name:'',notes:'',tech:[['Récolte','']],photos:{},prices:{'classique|250 g':6,'classique|500 g':10,'cremeux|250 g':7,'cremeux|500 g':11},visible:true}); prodDirty=true; drawProd(); };
+$('#prSave').onclick=async()=>{
+  const arr=prodDraft.map(p=>({id:p.id||null,name:p.name.trim(),notes:p.notes.trim(),tech:p.tech.filter(r=>r[0].trim()&&r[1].trim()).map(r=>[r[0].trim(),r[1].trim()]),photos:p.photos,prices:p.prices,visible:p.visible}));
+  if(arr.some(p=>p.name.length<2)){ toast('Chaque miel doit avoir un nom.'); return; }
+  if(arr.some(p=>!Object.keys(p.prices).length)){ toast('Cochez au moins une variante avec un prix pour chaque miel.'); return; }
+  const j=await rpc('admin_set_products',{p:pw,p_products:arr}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; }
+  prodDirty=false; toast('Miels enregistrés.'); await load(); };
+function resizeJpeg(file,max){ return new Promise(res=>{ const im=new Image(), u=URL.createObjectURL(file); im.onload=()=>{ const k=Math.min(1,max/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k); c.getContext('2d').drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(u); c.toBlob(b=>res(b),'image/jpeg',.85); }; im.onerror=()=>res(null); im.src=u; }); }
+async function uploadPhoto(file){
+  if(!SUPABASE_URL||!SUPABASE_KEY){ toast(ERR.config); return null; }
+  const blob=await resizeJpeg(file,1200); if(!blob){ toast('Image illisible.'); return null; }
+  const t=await rpc('admin_upload_token',{p:pw}); if(!t.token){ toast(ERR[t.error]||'Erreur.'); return null; }
+  const name=t.token+'/'+Date.now().toString(36)+'.jpg';
+  try{ const r=await fetch(SUPABASE_URL+'/storage/v1/object/photos/'+name,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'image/jpeg','x-upsert':'false'},body:blob});
+    if(!r.ok){ toast('Envoi refusé : le stockage des photos n’est pas prêt (voir README).'); return null; }
+  }catch(e){ toast(ERR.reseau); return null; }
+  return SUPABASE_URL+'/storage/v1/object/public/photos/'+name;
+}
+
+/* ---------- mot de passe oublié ---------- */
+$('#forgot').onclick=e=>{ e.preventDefault(); $('#fpanel').classList.toggle('hide'); };
+$('#fsend').onclick=async()=>{ $('#fmsg').textContent=''; const j=await rpc('admin_request_reset',{}); if(j.error){ $('#fmsg').textContent=ERR[j.error]||'Erreur.'; return; } $('#fmsg').textContent='Code envoyé. Regardez votre boîte mail (et les indésirables).'; $('#fstep2').classList.remove('hide'); };
+$('#fgo').onclick=async()=>{ const j=await rpc('admin_reset_password',{p_code:$('#fcode').value.trim(),p_new:$('#fp1').value}); if(j.error){ $('#fmsg').textContent=ERR[j.error]||'Erreur.'; return; } $('#fpanel').classList.add('hide'); $('#fstep2').classList.add('hide'); $('#lerr').textContent='Mot de passe changé. Connectez-vous avec le nouveau.'; $('#fcode').value=''; $('#fp1').value=''; };
+
+function openOrder(id){ onlyId=Number(id); go('orders'); }
+document.addEventListener('click',e=>{ const o=e.target.closest('[data-open]'); if(o&&!e.target.closest('button,a')){ openOrder(o.dataset.open); return; } if(e.target.closest('[data-all]')){ onlyId=null; filter='tous'; renderAll(); } });
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const o=e.target.closest&&e.target.closest('[data-open]'); if(o) openOrder(o.dataset.open); } });
+$('#bkNow').onclick=async()=>{ const j=await rpc('admin_send_backup',{p:pw}); if(j.error){ toast(ERR[j.error]||'Erreur.'); return; } toast('Sauvegarde envoyée par e-mail.'); };
+$('#shBanDel').onclick=()=>{ $('#shBan').value=''; $('#shBanSave').click(); };
+
+/* ---------- alerte nouvelle commande (la page se rafraîchit seule toutes les minutes tant que vous êtes connecté) ---------- */
+function newOrderAlert(list){
+  let b=document.getElementById('newOrd'); if(!b){ b=document.createElement('div'); b.id='newOrd'; b.setAttribute('role','alert'); b.style.cssText='position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:100;background:#3E8E4F;color:#fff;border:3px solid #3A2410;box-shadow:5px 5px 0 #3A2410;padding:14px 18px;max-width:94vw;font-size:1.1rem;font-weight:800;display:flex;gap:12px;align-items:center;flex-wrap:wrap'; document.body.appendChild(b); }
+  const o=list[list.length-1];
+  b.innerHTML=`<span>🔔 ${list.length>1?list.length+' nouvelles commandes':'Nouvelle commande'} : n° ${pad4(o.id)} · ${esc(o.customer_name)} · ${eur(o.total)}</span><button type="button" class="sm" id="noSee">Voir</button><button type="button" class="sm" id="noX" aria-label="Fermer">×</button>`;
+  b.style.display='flex';
+  b.querySelector('#noSee').onclick=()=>{ b.style.display='none'; openOrder(o.id); };
+  b.querySelector('#noX').onclick=()=>{ b.style.display='none'; };
+  try{ const ac=new (window.AudioContext||window.webkitAudioContext)(), os=ac.createOscillator(), g=ac.createGain(); os.connect(g); g.connect(ac.destination); os.frequency.value=880; g.gain.value=.15; os.start(); os.stop(ac.currentTime+.25); }catch(e){}
+}
+</script>
+</body>
+</html>
